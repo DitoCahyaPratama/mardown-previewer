@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 
+let marked = require("marked")
+
 function App() {
-	var variableOne = 'Lorem Ipsum';
-	var variableTwo = 'Lorem Ipsum';
-	var inputStyle = {
+	const inputStyle = {
 		width: '400px',
 		height: '50vh',
 		marginLeft: 'auto',
 		marginRight: 'auto',
 		padding: '10px',
 	};
-	var outputStyle = {
+	const outputStyle = {
 		width: '400px',
 		height: '50vh',
 		backgroundColor: '#DCDCDC',
@@ -19,6 +19,15 @@ function App() {
 		marginRight: 'auto',
 		padding: '10px',
 	};
+
+	const [markdown, setMarkdown] = useState('');
+
+	const updateMarkdown = (markdown) => {
+		setMarkdown(markdown);
+	};
+
+  marked(markdown)
+
 	return (
 		<div className="App">
 			<div className="container">
@@ -40,7 +49,14 @@ function App() {
 								</Badge>
 							</h4>
 							<div className="mark-input" style={inputStyle}>
-								<textarea className="input" style={inputStyle}></textarea>
+								<textarea
+									className="input"
+									style={inputStyle}
+									value={markdown}
+									onChange={(e) => {
+										updateMarkdown(e.target.value);
+									}}
+								></textarea>
 							</div>
 						</div>
 					</div>
@@ -52,7 +68,12 @@ function App() {
 								</Badge>
 							</h4>
 						</div>
-						<div style={outputStyle}></div>
+						<div
+                style={outputStyle}
+                dangerouslySetInnerHTML={{
+                  __html: marked(markdown),
+                }}
+              ></div>
 					</div>
 				</div>
 			</div>
